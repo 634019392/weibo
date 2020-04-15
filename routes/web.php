@@ -15,5 +15,14 @@ Route::get('/', 'StaticPagesController@home')->name('home');
 Route::get('/help', 'StaticPagesController@help')->name('help');
 Route::get('/about', 'StaticPagesController@about')->name('about');
 
+// 用户注册
 Route::get('signup', 'UsersController@create')->name('signup');
+// 用户资源路由
 Route::resource('users', 'UsersController');
+
+// 用户登陆
+Route::get('login', 'SessionsController@create')->name('login');
+Route::post('login', 'SessionsController@store')->name('login');
+
+// 用户退出
+Route::delete('logout', 'SessionsController@destroy')->name('logout');
