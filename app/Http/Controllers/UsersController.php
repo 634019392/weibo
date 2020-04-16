@@ -8,16 +8,26 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        // 未登录用户不可以登录当前控制器的页面（除show，create，store外）
+        $this->middleware('auth', [
+            'except' => ['show', 'create', 'store']
+        ]);
+
+        // 已登录用户不允许访问的页面(只让游客访问的)
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+    }
+
+    // 用户注册页面
     public function create()
     {
         return view('users.create');
     }
 
-    public function show(User $user)
-    {
-        return view('users.show', compact('user'));
-    }
-
+    // 用户创建功能
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -37,13 +47,23 @@ class UsersController extends Controller
         return redirect()->route('users.show', $user);
     }
 
+    // 展示个人信息页面
+    public function show(User $user)
+    {
+        return view('users.show', compact('user'));
+    }
+
+    // 编辑个人信息页面
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
+    // 编辑个人信息功能
     public function update(User $user, Request $request)
     {
+        $this->authorize('update', $user);
         $this->validate($request, [
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
@@ -53,7 +73,7 @@ class UsersController extends Controller
         if ($request->password) {
             $data['password'] = bcrypt($request->password);
         }
-        
+
         $user->update($data);
 
         session()->flash('success', '个人资料更新成功');
