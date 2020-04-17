@@ -12,13 +12,29 @@ class UsersController extends Controller
     {
         // 未登录用户不可以登录当前控制器的页面（除show，create，store外）
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store', 'index']
         ]);
 
         // 已登录用户不允许访问的页面(只让游客访问的)
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+    }
+
+    // 用户列表页
+    public function index()
+    {
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
+    }
+
+    // 删除管理员删除用户
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success', '成功删除用户！');
+        return back();
     }
 
     // 用户注册页面
