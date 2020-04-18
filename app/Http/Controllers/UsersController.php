@@ -11,7 +11,7 @@ class UsersController extends Controller
 {
     public function __construct()
     {
-        // 未登录用户不可以登录当前控制器的页面（除show，create，store外）
+        // 未登录用户不可以登录当前控制器的页面（除show, create, store, index, confirmEmail外）
         $this->middleware('auth', [
             'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
         ]);

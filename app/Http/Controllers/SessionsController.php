@@ -9,7 +9,7 @@ class SessionsController extends Controller
 {
     public  function __construct()
     {
-        // 已登录用户不允许访问的页面(只让游客访问的)
+        // 已登录用户不允许访问的页面(只让游客访问的,only就是指定create)
         $this->middleware('guest', [
             'only' => ['create']
         ]);
