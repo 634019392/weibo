@@ -11,7 +11,7 @@ class UsersController extends Controller
 {
     public function __construct()
     {
-        // 未登录用户不可以登录当前控制器的页面（除show, create, store, index, confirmEmail外）
+        // 未登录用户不可以登录当前控制器的页面（除show，create，store, index外）
         $this->middleware('auth', [
             'except' => ['show', 'create', 'store', 'index', 'confirmEmail']
         ]);
@@ -104,13 +104,11 @@ class UsersController extends Controller
     {
         $view = 'emails.confirm';
         $data = compact('user');
-        $from = 'summer@example.com';
-        $name = 'Summer';
         $to = $user->email;
         $subject = "感谢注册 Weibo 应用！请确认你的邮箱。";
 
-        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
-            $message->from($from, $name)->to($to)->subject($subject);
+        Mail::send($view, $data, function ($message) use ($to, $subject) {
+            $message->to($to)->subject($subject);
         });
     }
 
