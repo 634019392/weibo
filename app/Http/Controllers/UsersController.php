@@ -29,7 +29,7 @@ class UsersController extends Controller
         return view('users.index', compact('users'));
     }
 
-    // 删除管理员删除用户
+    // 删除 管理员删除用户
     public function destroy(User $user)
     {
         $this->authorize('destroy', $user);
