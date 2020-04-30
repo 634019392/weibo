@@ -43,3 +43,8 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('passw
 
 // 发布和删除微博
 Route::resource('statuses', 'StatusesController', ['only' => ['store', 'destroy']]);
+
+// 关注用户
+Route::post('/users/followers/{user}', 'FollowersController@store')->name('followers.store');
+// 取消关注用户
+Route::delete('/users/followers/{user}', 'FollowersController@destroy')->name('followers.destroy');
