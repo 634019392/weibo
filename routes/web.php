@@ -19,15 +19,18 @@ Route::get('/about', 'StaticPagesController@about')->name('about');
 Route::get('signup', 'UsersController@create')->name('signup');
 // 用户资源路由
 Route::resource('users', 'UsersController');
+// 用户注册时候激活
+Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
+// 关注者列表
+Route::get('/users/{user}/followings', 'UsersController@followings')->name('users.followings');
+// 粉丝列表
+Route::get('/users/{user}/followers', 'UsersController@followers')->name('users.followers');
 
 // 用户登陆
 Route::get('login', 'SessionsController@create')->name('login');
 Route::post('login', 'SessionsController@store')->name('login');
 // 用户退出
 Route::delete('logout', 'SessionsController@destroy')->name('logout');
-
-// 用户注册时候激活
-Route::get('signup/confirm/{token}', 'UsersController@confirmEmail')->name('confirm_email');
 
 // 显示重置密码的邮箱发送页面
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
